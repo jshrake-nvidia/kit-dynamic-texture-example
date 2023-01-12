@@ -1,4 +1,17 @@
-# *Omniverse Kit* Extensions Project Template
+# Dynamic Texture Provider Example
+
+Demonstrates how to programmatically generate a textured quad using the [omni.ui.DynamicTextureProvider](https://docs.omniverse.nvidia.com/kit/docs/omni.ui/latest/omni.ui/omni.ui.ByteImageProvider.html) API.
+
+Tested against Create 2022.3.1.
+
+```console
+.\link_app.bat --path C:\Users\jshrake\AppData\Local\ov\pkg\prod-create-2022.3.1
+.\app\omni.create.bat --ext-folder exts --enable omni.dynamic_texture_example
+```
+
+![demo](./demo.gif)
+
+## *Omniverse Kit* Extensions Project Template
 
 This project is a template for developing extensions for *Omniverse Kit*.
 
