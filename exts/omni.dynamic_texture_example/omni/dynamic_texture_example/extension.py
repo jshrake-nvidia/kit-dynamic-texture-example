@@ -57,35 +57,35 @@ class DynamicTextureProviderExample(omni.ext.IExt):
         self._texture: Union[None, ui.DynamicTextureProvider] = None
         self._window = ui.Window("Create Dynamic Texture Provider Example", width=300, height=300)
         with self._window.frame:
-            ui.Button("Create", clicked_fn=on_click_create)
+            ui.Button("Create", clicked_fn=self._on_click_create)
 
-        def on_click_create():
-            usd_context = omni.usd.get_context()
-            stage: Usd.Stage = usd_context.get_stage()
-            name = f"Thing"
-            image_name = name
-            prim_path = f"/World/{name}"
-            # If the prim already exists, remove it so we can create it again
-            try:
-                stage.RemovePrim(prim_path)
-                self._texture = None
-            except:
-                pass
-            # Create the prim root
-            model_root = UsdGeom.Xform.Define(stage, prim_path)
-            Usd.ModelAPI(model_root).SetKind(Kind.Tokens.component)
-            # Create the mesh + material + shader
-            create_textured_plane_prim(stage, prim_path, image_name)
-            # Open the adjacent cat.jpg file and create the texture
-            dir = pathlib.Path(__file__).parent.resolve()
-            image_path = dir.joinpath("cat.jpg")
-            image: Image.Image = Image.open(image_path, mode='r')
-            # Ensure the image format is RGBA
-            image = image.convert('RGBA')
-            image_bytes = image.tobytes()
-            image_resolution = (image.width, image.height)
-            image_format = ui.TextureFormat.RGBA8_UNORM
-            self._texture = create_dynamic_texture(image_name, image_bytes, image_resolution, image_format)
+    def _on_click_create(self):
+        usd_context = omni.usd.get_context()
+        stage: Usd.Stage = usd_context.get_stage()
+        name = f"TexturePlane"
+        image_name = name
+        prim_path = f"/World/{name}"
+        # If the prim already exists, remove it so we can create it again
+        try:
+            stage.RemovePrim(prim_path)
+            self._texture = None
+        except:
+            pass
+        # Create the prim root
+        model_root = UsdGeom.Xform.Define(stage, prim_path)
+        Usd.ModelAPI(model_root).SetKind(Kind.Tokens.component)
+        # Create the mesh + material + shader
+        create_textured_plane_prim(stage, prim_path, image_name)
+        # Open the adjacent cat.jpg file and create the texture
+        dir = pathlib.Path(__file__).parent.resolve()
+        image_path = dir.joinpath("cat.jpg")
+        image: Image.Image = Image.open(image_path, mode='r')
+        # Ensure the image format is RGBA
+        image = image.convert('RGBA')
+        image_bytes = image.tobytes()
+        image_resolution = (image.width, image.height)
+        image_format = ui.TextureFormat.RGBA8_UNORM
+        self._texture = create_dynamic_texture(image_name, image_bytes, image_resolution, image_format)
 
     def on_shutdown(self):
         self._texture = None
