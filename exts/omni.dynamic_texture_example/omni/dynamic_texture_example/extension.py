@@ -23,7 +23,7 @@ from pxr import Kind, Sdf, Usd, UsdGeom, UsdShade
 
 def create_textured_plane_prim(stage: Usd.Stage, prim_path: str, texture_name: str) -> Usd.Prim:
     # This code is mostly copy pasted from https://graphics.pixar.com/usd/release/tut_simple_shading.html
-    billboard = UsdGeom.Mesh.Define(stage, f"{prim_path}/Mesh")
+    billboard: UsdGeom.Mesh = UsdGeom.Mesh.Define(stage, f"{prim_path}/Mesh")
     billboard.CreatePointsAttr([(-430, -145, 0), (430, -145, 0), (430, 145, 0), (-430, 145, 0)])
     billboard.CreateFaceVertexCountsAttr([4])
     billboard.CreateFaceVertexIndicesAttr([0,1,2,3])
@@ -37,7 +37,7 @@ def create_textured_plane_prim(stage: Usd.Stage, prim_path: str, texture_name: s
     material = UsdShade.Material.Define(stage, material_path)
     shader: UsdShade.Shader = UsdShade.Shader.Define(stage, f"{material_path}/Shader")
     shader.SetSourceAsset("OmniPBR.mdl", "mdl")
-    shader.SetSourceAssetSubIdentifier("OmniPBR", "mdl");
+    shader.SetSourceAssetSubIdentifier("OmniPBR", "mdl")
     shader.CreateIdAttr("OmniPBR")
     shader.CreateInput("diffuse_texture", Sdf.ValueTypeNames.Asset).Set(f"dynamic://{texture_name}")
     material.CreateSurfaceOutput().ConnectToSource(shader.ConnectableAPI(), "surface")
